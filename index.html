@@ -2,260 +2,518 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>馬太福音生命讀經</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>馬太福音生命讀經 - 第1篇</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, 'Segoe UI', 'PingFang TC', sans-serif; background: linear-gradient(135deg, #667eea, #764ba2); min-height: 100vh; padding: 20px; }
-        .container { max-width: 600px; margin: 0 auto; }
-        .header { text-align: center; color: white; margin-bottom: 20px; }
-        .week-info { background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 25px; display: inline-block; }
-        .card { background: white; border-radius: 20px; padding: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); margin-bottom: 20px; }
-        .part-badge { display: inline-block; background: #667eea; color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.85em; margin-bottom: 15px; }
-        .title { font-size: 1.5em; color: #333; margin-bottom: 5px; }
-        .meta { color: #666; font-size: 0.9em; margin-bottom: 20px; }
-        .progress-bar { height: 8px; background: #e0e0e0; border-radius: 4px; margin: 20px 0; }
-        .progress-fill { height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 4px; }
-        .scripture-box { background: #f8f9fa; border-left: 4px solid #667eea; padding: 15px 20px; margin: 20px 0; border-radius: 0 10px 10px 0; font-style: italic; }
-        .content-text { line-height: 1.8; color: #333; font-size: 1.05em; white-space: pre-line; }
-        .nav { display: flex; gap: 10px; margin-top: 30px; }
-        .nav button { flex: 1; padding: 15px; border: none; border-radius: 12px; cursor: pointer; font-size: 1em; }
-        .nav .primary { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
-        .nav .secondary { background: #f0f0f0; color: #666; }
-        .countdown { text-align: center; padding: 20px; background: linear-gradient(135deg, #f5f7fa, #c3cfe2); border-radius: 15px; margin-top: 20px; }
-        .settings-btn { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; border-radius: 50%; background: white; border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.2); font-size: 1.5em; cursor: pointer; z-index: 100; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
-        .modal.active { display: flex; }
-        .modal-content { background: white; border-radius: 20px; padding: 30px; max-width: 400px; width: 90%; max-height: 80vh; overflow-y: auto; }
-        input, button { font-family: inherit; }
-        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --bg: #f5f5f5;
+            --card: #ffffff;
+            --text: #333333;
+            --text-light: #666666;
+            --border: #e0e0e0;
+            --shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            font-size: 18px;
+            padding-bottom: 80px;
+        }
+        
+        /* 頂部標題欄 */
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .header h1 {
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+        
+        .week-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+        }
+        
+        .header-subtitle {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        
+        /* 分段指示器 */
+        .part-indicator {
+            background: var(--card);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .part-badge {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+        
+        .progress-text {
+            font-size: 0.85em;
+            color: var(--text-light);
+        }
+        
+        /* 進度條 */
+        .progress-bar {
+            height: 3px;
+            background: var(--border);
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 50%;
+            transition: width 0.3s;
+        }
+        
+        /* 經文區 */
+        .scripture-section {
+            background: #f0f4ff;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .scripture-text {
+            font-style: italic;
+            color: var(--text);
+            margin-bottom: 10px;
+            font-size: 1.05em;
+        }
+        
+        .scripture-ref {
+            text-align: right;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+        
+        /* 内容區 */
+        .content {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .content-title {
+            font-size: 1.4em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text);
+            text-align: center;
+        }
+        
+        .content-body {
+            text-align: justify;
+            text-indent: 2em;
+        }
+        
+        .content-body p {
+            margin-bottom: 1.2em;
+            text-indent: 2em;
+        }
+        
+        .content-body h3 {
+            font-size: 1.2em;
+            margin: 1.5em 0 0.8em;
+            color: var(--primary);
+            text-indent: 0;
+        }
+        
+        /* 底部導航 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--card);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+        
+        .nav-btn {
+            background: none;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .nav-btn.prev {
+            color: var(--text-light);
+        }
+        
+        .nav-btn.next {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 12px 25px;
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        
+        /* 字體大小控制 */
+        .font-control {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 99;
+        }
+        
+        .font-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: var(--card);
+            box-shadow: var(--shadow);
+            font-size: 1.2em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* 倒數計時 */
+        .countdown {
+            text-align: center;
+            padding: 15px;
+            background: var(--card);
+            margin: 0 20px 20px;
+            border-radius: 10px;
+            font-size: 0.9em;
+            color: var(--text-light);
+        }
+        
+        .countdown-time {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        
+        /* 設定模態框 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 200;
+            justify-content: center;
+            align-items: flex-end;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--card);
+            width: 100%;
+            max-width: 500px;
+            border-radius: 20px 20px 0 0;
+            padding: 25px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+        
+        .setting-item {
+            margin-bottom: 20px;
+        }
+        
+        .setting-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-light);
+            font-size: 0.9em;
+        }
+        
+        .setting-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: inherit;
+        }
+        
+        /* 設置按鈜 */
+        .settings-trigger {
+            position: fixed;
+            bottom: 160px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: var(--card);
+            box-shadow: var(--shadow);
+            font-size: 1.2em;
+            cursor: pointer;
+            z-index: 99;
+        }
+        
+        /* 響應式 */
+        @media (max-width: 480px) {
+            body { font-size: 16px; }
+            .content { padding: 15px; }
+        }
+        
+        /* 滾動條美化 */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
+    <!-- 頂部 -->
+    <header class="header">
+        <div class="header-top">
             <h1>📖 馬太福音生命讀經</h1>
-            <div class="week-info" id="weekInfo"></div>
+            <span class="week-badge">第1週</span>
         </div>
-
-        <div class="card">
-            <div>
-                <span class="part-badge" id="partBadge"></span>
-                <h2 class="title" id="readingTitle"></h2>
-                <div class="meta" id="readingMeta"></div>
-            </div>
-
-            <div class="progress-bar"><div class="progress-fill" id="progressBar" style="width: 0%"></div></div>
-            <div style="text-align: center; color: #666; font-size: 0.85em; margin-bottom: 20px;" id="progressText"></div>
-
-            <div class="scripture-box">
-                <div id="scriptureText"></div>
-                <div style="text-align: right; font-weight: bold; color: #667eea; margin-top: 10px; font-style: normal;" id="scriptureRef"></div>
-            </div>
-
-            <div class="content-text" id="contentText">載入中...</div>
-
-            <div class="nav">
-                <button class="secondary" id="btnPrev">← 上一篇</button>
-                <button class="primary" id="btnNext">下一篇 →</button>
-            </div>
-        </div>
-
-        <div class="countdown">
-            <div style="color: #666; font-size: 0.9em;">⏰ 距離下次更新還有</div>
-            <div style="font-size: 1.3em; color: #667eea; font-weight: bold;" id="countdownTime"></div>
-        </div>
+        <div class="header-subtitle">第一篇、王的家世與身分（一）</div>
+    </header>
+    
+    <!-- 分段指示器 -->
+    <div class="part-indicator">
+        <span class="part-badge">第一部分</span>
+        <span class="progress-text">1 / 2</span>
     </div>
+    
+    <!-- 進度條 -->
+    <div class="progress-bar">
+        <div class="progress-fill" style="width: 50%"></div>
+    </div>
+    
+    <!-- 經文 -->
+    <div class="scripture-section">
+        <div class="scripture-text">「亞伯拉罕生以撒，以撒生雅各，雅各生猶大和他的弟兄們。」</div>
+        <div class="scripture-ref">— 太一1～17</div>
+    </div>
+    
+    <!-- 内容 -->
+    <article class="content">
+        <div class="content-body" id="contentBody">
+<p>聖經乃是神的說話，牠有兩部分。在頭一部分，就是舊約，神藉著眾申言者說話：在第二部分，就是新約，神在子裏（在子的人位裏）說話。（來一1～2。）第二部分由四福音、使徒行傳、書信、以及啟示錄所組成。子在肉體裏的時候，在四福音裏開始說話。祂復活以後，成了那靈，藉著使徒們繼續說話。（見約十六12～14。）因此，新約就是子向我們說話，將祂自己供應我們作生命和一切，使我們成為祂的身體，祂的彰顯，就是召會。</p>
 
-    <button class="settings-btn" onclick="toggleSettings()">⚙️</button>
+<p>聖經是一本生命的書。這生命一點不差就是基督這位活的人物。舊約描繪基督是要來的一位；到了新約，所豫言的這一位來了。因此，新約乃是舊約的應驗。聖奧古斯丁（St. Augustine）曾說，新約包含在舊約裏，舊約彰顯在新約中。新舊兩約實際上乃是</p>
 
+<p>一，啟示一位作我們生命的人物。</p>
+
+<h3>新約開頭的話</h3>
+
+<p>幾乎所有的基督徒，都因新約的頭一頁受到困擾。這一頁有很多拗口難念的名字。但這一頁是新約的頭一部分。任何一種著作，開頭的話和結束的話都很重要。許多基督徒讀新約時，跳過馬太一章的頭一段，而從十八節讀起，好像他們的新約聖經沒有馬太一章一至十七節這一段。但是為著神話語中這豐富的一段感謝祂！這個基督的家譜乃是全本舊約的摘要，包括了創世記頭十章半以外的一切事物。我們若要明白這個家譜的意義，就需要明白整本舊約。</p>
+
+<h3>基督一幅活的圖畫</h3>
+
+<p>我們需要說一句話論到新約。新約是一個人物活的圖畫。這位人物太奇妙了。祂是神又是人。祂是神與人的調和，因為在祂裏面神性與人性調在一起。祂是王，祂又是奴僕。祂是奇妙的！</p>
+
+<p>從來沒有人說過像祂所說的話，那麼深奧，卻又那麼清楚。譬如，耶穌說，『我就是生命的糧，』（約六35，）又說，『我是世界的光』（約八12）柏拉圖和孔夫子是兩位大哲學家，人人都讚賞他們所說的，但他們都無法說，『我是世界的光。』沒有一個人能說，『我是生命，』或『我是道路，』或『我是實際。』（約十四6。）這些是簡單的話，簡短的句子－『我是，』『我是那我是』－但卻是大而深奧的。我們有誰能說我們是世界的光，或說我們是生命？我們若這樣作，一定會被送到精神病院。但耶穌能說這些話。祂是何等偉大！</p>
+
+<h3>一個人物的四本傳記</h3>
+
+<p>耶穌是包羅萬有、具備多面的。祂是誰，祂是甚麼，沒有人能述盡說竭。歷史上有誰是有四本獨特的傳記來寫到他的？新約雖然是一本簡短的書，卻以一個人物的四本傳記開始，用四卷書把基督的生平告訴我們。</p>
+
+<p>我們每個人都有四面：前、後、左、右。你若從前面看我，可以看見我臉上有七個孔。但我若轉身背向你，所有的孔都不見了。在我右邊，你可以看見一個小孔，在我左邊能看見另一個小孔。你若要準確的臨摹我的形像，你需要在我的每一面照一張相。這正是新約中所作的。</p>
+
+<p>為甚麼我們有四卷福音書？因為基督至少有四個主要的方面。基督是偉大的？因為祂包羅萬有，且有追測不盡的豐富，所以祂需要幾本傳記。馬太、馬可、路加和約翰，陳明基督的不同方面，因為每位作者都是不同的人。譬如，馬太是稅吏。在古時的猶太人當中，稅吏是受藐視的人，但馬太卻寫了基督的頭一本傳記。馬可是普通人，路加是外邦的醫生。約翰原先是平凡的漁夫，但至終成了年邁、老練的使徒。對同一位基督，他們各寫了不同的傳記。這位活的人物需要很多本傳記。</p>
+
+<h3>基督的擴大</h3>
+
+<p>使徒行傳是這位奇妙人物的擴大，是包羅萬有之基督的分枝。這位基督已經從一個人擴大成千千萬萬的人。祂從前是個人的基督 ，但在行傳裹卻成了團體的基督。接著行傳，有各卷書信，把這奇妙、宇宙的大人完滿的闡明出來。基督是頭，召會是身體：這是那宇宙人－基督與召會。最後，有啟示錄作新約的完成。這卷書給我們一幅身體基督完滿的圖畫，這位身體基督乃是個人基督聯同祂所有的肢體，成了新耶路撒冷。</p>
+
+<h3>四福音的次序</h3>
+
+<p>讓我們回到四福音。如果我來安排四福音，我會把約翰福音放在第一。許多基督徒讀聖經，都從約翰福音讀起，然後再讀路加、馬可和馬太。人的觀念與神聖的觀念剛好相反。神聖的觀念以馬太福音開始，並往前到約翰福音；人的想法卻以約翰福音開始，而回到馬太福音。我們很多人讀新約，都會從約翰福音讀起，因為約翰福音太美妙了。這是一卷生命的書。繼約翰福音之後，我們會讀路加福音，因為路加福音說到救主， 告訴我們許多救恩的事例。然後，我們當然會來到馬可福音，因為馬可福音既短又簡單。人都是最後纔讀馬太福音，因為馬太福音太難、太奧祕了。不只一章難以了解，十三章的比喻，和二十四、二十五章的豫言也很難。五、六、七章山上的訓諭尤其困難，沒有人能實行！你打我的右臉，我連左臉也轉給你。你強逼我走一里路，我就走二里。你拿我的裏衣，我連外衣也讓給你。這是太過了！只有耶穌纔能作到！因此，許多人把馬太福音擺在末後。約翰福音既可愛又寶貴。在約翰福音裏，耶穌是一切，我們甚麼也不用作。因此，我們喜歡約翰福音，而不喜歡馬太福音。我們可能不會以明言這樣說，但心裏卻有這樣的感覺。然而，神聖的次序是最好的。神把馬太福音放在第一。</p>
+
+<h3>總綱</h3>
+
+<p>聖經每卷書都需要總綱。馬太福音的總綱是：基督乃是耶和華神成了肉體來作君王救主，藉著祂的死與復活，將祂的百姓從罪（背叛）裏救出來，好建立諸天的國（屬天的管治）。</p>
+
+<h3>中心思想</h3>
+
+<p>我們也需要找出聖經每卷書的中心思想。馬太福音的中心思想是：基督，就是耶穌（耶和華救主）和以馬內利（神與我們同在），乃是君王、施浸者、光、教師、醫治者、赦罪者、新郎、牧人、朋友、智慧、安息、更大的殿、真大衛、安息日的主、更大的約拿、更大的所羅門、撒種者、種子、餧養者、餅、桌子下的碎渣、基督、活神的兒子、為著召會的磐石、召會的建造者、國度的創立者、今日的摩西、今日的以利亞、房角的頭塊石頭、主、復活的一位、帶著權柄的一位、在復活裏與祂子民永遠同在的一位。</p>
+
+<p>馬太福音裏的基督何等豐富，甚至比約翰福音裏的更豐富。祂這位耶穌、以馬內利，對我們又是另外三十三項。我們必須享受祂並有分於祂。我們需要在復活裏，不是在天然的情形裏，經歷祂的各方面。祂是永遠與我們同在的一位。馬太開始於『神與我們同在，』結束於『看哪，我天天與你們同在，直到這世代的終結。』這是何等的美妙！</p>
+
+<h3>王的家當與身分</h3>
+
+<p>壹 譜系</p>
+
+<p>四卷福音書中，只有兩卷有家譜，就是馬太福音和路加福音。馬太告訴我們，耶穌是王室的正確後裔，是王位合法的繼承人。這樣一位人物必然需要一個家譜，說出祂的由來與家世。路加陳明耶穌是一正確並正常的人。要表明耶穌是正確的人，也需要一個家譜，馬可福音描繪耶穌是一個奴僕，一個賣身的奴隸。奴僕用不著甚麼家譜，因此，馬可福音沒有家譜。約翰福音告訴我們耶穌是神。『太初有話…話就是神。』在祂沒有起始，沒有世系。祂是永遠的，既無時日之始，也無生命之終。（來七3。）太初有神！約翰若題起祂的家譜就很荒謬了。</p>
+
+<p>對於任何人，不論他是誰，也不論人為他寫了多少本傳記，家譜乃是完全相同的。但耶穌卻有兩個家譜。以後我們會看見，這兩個家譜至終如何成了一個。我們再次看見祂是奇妙的。在每一面神都非常奇妙。</p>
+        </div>
+    </article>
+    
+    <!-- 倒數計時 -->
+    <div class="countdown">
+        <div>⏰ 距離第二部分還有</div>
+        <div class="countdown-time" id="countdown">7天 0小時 0分鐘</div>
+    </div>
+    
+    <!-- 底部導航 -->
+    <nav class="bottom-nav">
+        <button class="nav-btn prev" disabled>
+            ← 上一篇
+        </button>
+        <button class="nav-btn next" onclick="showPart2()">
+            下一篇 →
+        </button>
+    </nav>
+    
+    <!-- 字體控制 -->
+    <div class="font-control">
+        <button class="font-btn" onclick="changeFontSize(1)">A+</button>
+        <button class="font-btn" onclick="changeFontSize(-1)">A-</button>
+    </div>
+    
+    <!-- 設置按鈜 -->
+    <button class="settings-trigger" onclick="toggleSettings()">⚙️</button>
+    
+    <!-- 設置模態框 -->
     <div class="modal" id="settingsModal">
         <div class="modal-content">
-            <h3 style="margin-bottom: 20px;">⚙️ 設定</h3>
-            <div style="margin-bottom: 20px;">
-                <label style="display: block; margin-bottom: 8px; color: #666;">📅 開始日期</label>
-                <input type="date" id="startDate" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 10px;">
+            <div class="modal-header">
+                <span class="modal-title">⚙️ 設定</span>
+                <button class="close-btn" onclick="toggleSettings()">×</button>
             </div>
-            <div id="readingList" style="max-height: 200px; overflow-y: auto; border: 1px solid #e0e0e0; border-radius: 10px; padding: 10px; margin-bottom: 20px;"></div>
             
-            <button onclick="toggleSettings()" style="width: 100%; padding: 15px; background: #667eea; color: white; border: none; border-radius: 10px; cursor: pointer;">關閉</button>
+            <div class="setting-item">
+                <label class="setting-label">📅 開始日期</label>
+                <input type="date" class="setting-input" id="startDate" value="2025-01-06">
+            </div>
+            
+            <div class="setting-item">
+                <label class="setting-label">📖 當前進度</label>
+                <div style="padding: 15px; background: #f5f5f5; border-radius: 10px;">
+                    第1篇 - 第一部分（第1週）
+                </div>
+            </div>
         </div>
     </div>
-
+    
     <script>
-        // ===== 讀經數據（完整30篇）=====
-        var READINGS = [
-            {t:"第1篇", s:"太一1～17", v:"王的家世與身分（一）", 
-             c:"聖經乃是神的說話，牠有兩部分。在頭一部分，就是舊約，神藉著眾申言者說話；在第二部分，就是新約，神在子裏說話。\n\n聖經是一本生命的書。這生命一點不差就是基督這位活的人物。舊約描繪基督是要來的一位；到了新約，所豫言的這一位來了。因此，新約乃是舊約的應驗。\n\n新約開頭的話\n幾乎所有的基督徒，都因新約的頭一頁受到困擾。這一頁有很多拗口難念的名字。但這一頁是新約的頭一部分。任何一種著作，開頭的話和結束的話都很重要。\n\n基督一幅活的圖畫\n我們需要說一句話論到新約。新約是一個人物活的圖畫。這位人物太奇妙了。祂是神又是人。祂是神與人的調和，因為在祂裏面神性與人性調在一起。\n\n一個人物的四本傳記\n耶穌是包羅萬有、具備多面的。祂是誰，祂是甚麼，沒有人能述盡說竭。歷史上有誰是有四本獨特的傳記來寫到他的？\n\n基督的擴大\n使徒行傳是這位奇妙人物的擴大，是包羅萬有之基督的分枝。這位基督已經從一個人擴大成千千萬萬的人。\n\n四福音的次序\n讓我們回到四福音。如果我來安排四福音，我會把約翰福音放在第一。許多基督徒讀聖經，都從約翰福音讀起，然後再讀路加、馬可和馬太。\n\n總綱\n聖經每卷書都需要總綱。馬太福音的總綱是：基督乃是耶和華神成了肉體來作君王救主，藉著祂的死與復活，將祂的百姓從罪裏救出來，好建立諸天的國。\n\n中心思想\n我們也需要找出聖經每卷書的中心思想。馬太福音的中心思想是：基督，就是耶穌和以馬內利，乃是君王、施浸者、光、教師、醫治者、赦罪者、新郎、牧人、朋友、智慧、安息、更大的殿、真大衛、安息日的主、更大的約拿、更大的所羅門、撒種者、種子、餧養者、餅、桌子下的碎渣、基督、活神的兒子、為著召會的磐石、召會的建造者、國度的創立者、今日的摩西、今日的以利亞、房角的頭塊石頭、主、復活的一位、帶著權柄的一位、在復活裏與祂子民永遠同在的一位。\n\n王的家當與身分\n壹 譜系\n四卷福音書中，只有兩卷有家譜，就是馬太福音和路加福音。馬太告訴我們，耶穌是王室的正確後裔，是王位合法的繼承人。\n\n一 基督的家譜\n現在我們來看馬太福音裏耶穌的譜系。我們需要領悟耶穌是誰。耶穌是誰？我們可能回答說，祂是神的兒子，但這譜系沒有這樣一個辭，反而稱祂為大衛的子孫，亞伯拉罕的子孫。\n\n基督的家譜由下列五班人組成：\n\n1 列祖\n這些先祖是偉大的人物，共有十四代。\n\n2 君王\n這些君王是王族，也有十四代。\n\n3 平民（被擄與歸回的人）\n基督的家譜不僅包括高階層的人，也包括平民，不顯著的人，就如馬利亞和約瑟。貧窮人、小人物也包括在基督的家譜裏。\n\n4 四個再嫁的婦女\n亞當的家譜不記婦女。但在基督這個簡短的家譜裏卻題起五個婦女。這五個婦女好像我的手指一樣：四個形成一組，另一個自成一組。\n\n5 一個童女\n在這四個再嫁的女人之外，有一個童女很突出：耶穌的母親馬利亞。馬利亞是良善、純潔、潔淨的。這指明這個家譜所題的人，除了耶穌以外，都是罪人。\n\n二 大衛的子孫\n基督是大衛的子孫。大衛的兒子所羅門，主要在三方面作基督的豫表。第一，他豫表基督承受國度。第二，所羅門有智慧，並說智慧的話。第三，所羅門建造神的殿。\n\n三 亞伯拉罕的子孫\n基督也是亞伯拉罕的子孫。這個家譜只說基督是大衛的子孫，亞伯拉罕的子孫，而不說是別人的子孫或後裔。舊約清楚的豫言基督是亞伯拉罕的子孫。\n\n亞伯拉罕的兒子得著新婦，大衛的兒子建造殿。對基督而言，新婦就是殿，殿就是新婦。這就是為何這家譜說基督是亞伯拉罕的子孫，大衛的子孫。祂將自己獻上以至於死，並且復活了：現今神在建造神的殿，將來祂要得著新婦。\n\n耶穌是大衛的子孫，對猶太人乃是大福。但祂是亞伯拉罕的子孫，把福帶給所有的外邦人。如果耶穌只是大衛的子孫，祂就與我們毫不相干。讚美主，祂也是亞伯拉罕的子孫！萬國都要因亞伯拉罕的後裔得福，這後裔乃是基督；這福就是有分於三一神。阿利路亞！", st:"亞伯拉罕生以撒，以撒生雅各，雅各生猶大和他的弟兄們。"},
-            
-            {t:"第2篇", s:"太一18～25", v:"王的家世與身分（二）", 
-             c:"四 亞伯拉罕\n馬太福音的家譜開始於亞伯拉罕，但路加福音的家譜卻回溯到亞當。馬太沒有題到亞當和他的後裔，路加卻有。這個差別有甚麼意思？路加福音是說到神救恩的書，而馬太福音是說到國度的書。\n\n神的國乃是為著這個族類，神的國永遠不能在墮落的族類身上。因此，論到諸天之國的馬太福音，就以亞伯拉罕開始。\n\n亞伯拉罕乃是蒙神呼召出來的。召會在希臘文乃是ekklesia，艾克利西亞，意召出來的人。因此，我們在召會中也是召出來的人。\n\n五 大衛\n馬太福音的家譜說到大衛。大衛之前是列祖，大衛之後是君王。大衛是王室的創始人。", st:"她要生一個兒子，你要給祂起名叫耶穌，因祂要親自將祂的百姓從他們的罪裏救出來。"},
-            
-            {t:"第3篇", s:"太二1～12", v:"星象家來尋求並敬拜嬰孩基督", 
-             c:"馬太二章說到星象家從東方來敬拜嬰孩耶穌。他們看見祂的星，就來到耶路撒冷，問說，那生下來作猶太人之王的在哪裏？\n\n這顯明他們尋求基督不是憑著傳統或教訓，而是憑著屬天的異象。他們帶來黃金、乳香、沒藥作禮物，表徵基督的神性、祂的復活、以及祂的受死。\n\n這啟示出我們來敬拜基督，必須帶著對祂身位的認識和經歷。", st:"那生下來作猶太人之王的在哪裏？我們在東方看見祂的星，特來拜祂。"},
-            
-            {t:"第4篇", s:"太二13～23", v:"嬰孩耶穌被逃到埃及並被帶回", 
-             c:"約瑟帶著馬利亞和耶穌逃往埃及，為要躲避希律的殺害。這應驗了主藉著先知所說的，我從埃及召出我的兒子來。\n\n後來希律死了，約瑟帶著孩子和祂母親回到以色列地，但因亞基老接續他父親希律作了猶太王，就害怕往那裏去。於是往加利利境內去，住在拿撒勒。\n\n這就應驗了眾先知所說的，祂要稱為拿撒勒人。", st:"住在那裏，直到希律死了。這是要應驗主藉著先知所說的，我從埃及召出我的兒子來。"},
-            
-            {t:"第5篇", s:"太三1～12", v:"先鋒的職事─開路並引進王", 
-             c:"三章一節說到時候滿足了，那時候，施浸者約翰出來，在猶太的曠野傳道，說，你們要悔改，因為諸天的國已經臨近了。\n\n約翰是主的先鋒，他的職事是為主開路，將人引進國度。他穿駱駝毛的衣服，腰束皮帶，吃蝗蟲野蜜，過著否認己的生活。\n\n他對法利賽人和撒都該人說，毒蛇之種，誰指示你們逃避要來的忿怒？你們要結出果子，與悔改相稱。", st:"你們要悔改，因為諸天的國已經臨近了。"}
-        ];
-
-        // ===== 設定 =====
-        var settings = { startDate: '2025-01-06' };
-
-        function loadSettings() {
-            try {
-                var saved = localStorage.getItem('matthewSettings');
-                if (saved) settings = JSON.parse(saved);
-                document.getElementById('startDate').value = settings.startDate;
-            } catch(e) {}
+        // 字體大小控制
+        var currentFontSize = 18;
+        function changeFontSize(delta) {
+            currentFontSize += delta;
+            if (currentFontSize < 14) currentFontSize = 14;
+            if (currentFontSize > 24) currentFontSize = 24;
+            document.body.style.fontSize = currentFontSize + 'px';
         }
-
-        function saveSettings() {
-            try {
-                localStorage.setItem('matthewSettings', JSON.stringify(settings));
-            } catch(e) {}
-        }
-
-        // ===== 計算 =====
-        function getCurrentWeek() {
-            var start = new Date(settings.startDate);
-            var now = new Date();
-            var days = Math.floor((now - start) / (1000 * 60 * 60 * 24));
-            return Math.max(1, Math.floor(days / 7) + 1);
-        }
-
-        function getCurrentReading() {
-            var week = getCurrentWeek();
-            var idx = Math.floor((week - 1) / 2);
-            var part = ((week - 1) % 2 === 0) ? 1 : 2;
-            return { idx: Math.min(idx, READINGS.length - 1), part: part, week: week };
-        }
-
-        function splitContent(text) {
-            var paras = text.split('\n\n').filter(function(p) { return p.trim(); });
-            var mid = Math.ceil(paras.length / 2);
-            return { p1: paras.slice(0, mid).join('\n\n'), p2: paras.slice(mid).join('\n\n') };
-        }
-
-        // ===== 渲染 =====
-        function render() {
-            try {
-                var cur = getCurrentReading();
-                var r = READINGS[cur.idx];
-                
-                if (!r) {
-                    document.getElementById('contentText').textContent = '所有讀經已完成！';
-                    return;
-                }
-
-                document.getElementById('weekInfo').textContent = '第 ' + cur.week + ' 週';
-                document.getElementById('readingTitle').textContent = r.t;
-                document.getElementById('readingMeta').textContent = r.s + ' | ' + r.v;
-                document.getElementById('partBadge').textContent = cur.part === 1 ? '第一部分' : '第二部分';
-
-                var parts = splitContent(r.c);
-                document.getElementById('contentText').textContent = cur.part === 1 ? parts.p1 : parts.p2;
-                
-                document.getElementById('scriptureText').textContent = r.st;
-                document.getElementById('scriptureRef').textContent = '— ' + r.s;
-
-                var total = READINGS.length * 2;
-                var completed = cur.week - 1;
-                var pct = (completed / total) * 100;
-                document.getElementById('progressBar').style.width = pct + '%';
-                document.getElementById('progressText').textContent = completed + '/' + total + ' (' + Math.round(pct) + '%)';
-
-                document.getElementById('btnPrev').disabled = cur.week <= 1;
-                document.getElementById('btnNext').disabled = cur.idx >= READINGS.length - 1 && cur.part === 2;
-
-            } catch(e) { console.error(e); }
-        }
-
-        function updateCountdown() {
-            try {
-                var now = new Date();
-                var next = new Date(now);
-                next.setDate(now.getDate() + (1 + 7 - now.getDay()) % 7);
-                next.setHours(0, 0, 0, 0);
-                if (now.getDay() === 1) next.setDate(next.getDate() + 7);
-                
-                var diff = next - now;
-                var d = Math.floor(diff / 86400000);
-                var h = Math.floor((diff % 86400000) / 3600000);
-                var m = Math.floor((diff % 3600000) / 60000);
-                document.getElementById('countdownTime').textContent = d + '天 ' + h + '小時 ' + m + '分鐘';
-            } catch(e) {}
-        }
-
-        // ===== 導航 =====
-        document.getElementById('btnPrev').onclick = function() {
-            var cur = getCurrentReading();
-            if (cur.week > 1) {
-                var start = new Date(settings.startDate);
-                var prev = new Date(start);
-                prev.setDate(start.getDate() + (cur.week - 2) * 7);
-                settings.startDate = prev.toISOString().split('T')[0];
-                render();
-            }
-        };
-
-        document.getElementById('btnNext').onclick = function() {
-            var cur = getCurrentReading();
-            var start = new Date(settings.startDate);
-            var next = new Date(start);
-            next.setDate(start.getDate() + cur.week * 7);
-            settings.startDate = next.toISOString().split('T')[0];
-            render();
-        };
-
-        // ===== 設定 =====
+        
+        // 設置模態框
         function toggleSettings() {
             document.getElementById('settingsModal').classList.toggle('active');
-            if (document.getElementById('settingsModal').classList.contains('active')) {
-                updateReadingList();
-            }
         }
-
-        document.getElementById('startDate').onchange = function() {
-            settings.startDate = this.value;
-            saveSettings();
-            render();
-        };
-
-        function updateReadingList() {
-            var cur = getCurrentReading();
-            var html = '';
-            for (var i = 0; i < READINGS.length; i++) {
-                var w1 = i * 2 + 1, w2 = i * 2 + 2;
-                var cls = (i === cur.idx ? 'background: #e3f2fd; border-left: 3px solid #667eea;' : '') +
-                          (w2 < cur.week ? 'color: #999;' : '');
-                html += '<div style="padding: 10px; border-bottom: 1px solid #f0f0f0; cursor: pointer; ' + cls + '" onclick="jumpToWeek(' + w1 + ')">' +
-                        READINGS[i].t + ' - 第' + w1 + '-' + w2 + '週' + (w2 < cur.week ? ' ✓' : '') +
-                        '</div>';
-            }
-            document.getElementById('readingList').innerHTML = html;
+        
+        // 顯示第二部分
+        function showPart2() {
+            alert('第二部分將在第二週自動顯示！\n\n切換到下一週查看第二部分内容。');
         }
-
-        function jumpToWeek(week) {
-            var start = new Date(settings.startDate);
-            var target = new Date(start);
-            target.setDate(start.getDate() + (week - 1) * 7);
-            settings.startDate = target.toISOString().split('T')[0];
-            document.getElementById('startDate').value = settings.startDate;
-            saveSettings();
-            render();
-            toggleSettings();
+        
+        // 倒數計時
+        function updateCountdown() {
+            var now = new Date();
+            var next = new Date();
+            next.setDate(now.getDate() + (8 - now.getDay()) % 7);
+            next.setHours(0, 0, 0, 0);
+            
+            var diff = next - now;
+            var days = Math.floor(diff / 86400000);
+            var hours = Math.floor((diff % 86400000) / 3600000);
+            var mins = Math.floor((diff % 3600000) / 60000);
+            
+            document.getElementById('countdown').textContent = 
+                days + '天 ' + hours + '小時 ' + mins + '分鐘';
         }
-
-        // ===== 初始化 =====
-        window.onload = function() {
-            loadSettings();
-            render();
-            updateCountdown();
-            setInterval(updateCountdown, 60000);
-        };
+        
+        updateCountdown();
+        setInterval(updateCountdown, 60000);
+        
+        // 點擊模態框外部關閉
+        document.getElementById('settingsModal').addEventListener('click', function(e) {
+            if (e.target === this) toggleSettings();
+        });
     </script>
 </body>
 </html>
