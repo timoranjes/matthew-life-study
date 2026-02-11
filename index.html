@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>馬太福音生命讀經 - 第1篇</title>
+    <title>馬太福音生命讀經</title>
     <style>
         :root {
             --primary: #667eea;
@@ -27,7 +27,6 @@
             padding-bottom: 80px;
         }
         
-        /* 頂部標題欄 */
         .header {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
@@ -55,6 +54,12 @@
             padding: 5px 15px;
             border-radius: 20px;
             font-size: 0.85em;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .week-badge:hover {
+            background: rgba(255,255,255,0.3);
         }
         
         .header-subtitle {
@@ -62,7 +67,6 @@
             opacity: 0.9;
         }
         
-        /* 分段指示器 */
         .part-indicator {
             background: var(--card);
             padding: 15px 20px;
@@ -86,7 +90,6 @@
             color: var(--text-light);
         }
         
-        /* 進度條 */
         .progress-bar {
             height: 3px;
             background: var(--border);
@@ -99,7 +102,6 @@
             transition: width 0.3s;
         }
         
-        /* 經文區 */
         .scripture-section {
             background: #f0f4ff;
             padding: 20px;
@@ -122,24 +124,14 @@
             font-size: 0.9em;
         }
         
-        /* 内容區 */
         .content {
             padding: 20px;
             max-width: 800px;
             margin: 0 auto;
         }
         
-        .content-title {
-            font-size: 1.4em;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: var(--text);
-            text-align: center;
-        }
-        
         .content-body {
             text-align: justify;
-            text-indent: 2em;
         }
         
         .content-body p {
@@ -154,7 +146,6 @@
             text-indent: 0;
         }
         
-        /* 底部導航 */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -197,7 +188,6 @@
             cursor: not-allowed;
         }
         
-        /* 字體大小控制 */
         .font-control {
             position: fixed;
             bottom: 100px;
@@ -222,7 +212,6 @@
             justify-content: center;
         }
         
-        /* 倒數計時 */
         .countdown {
             text-align: center;
             padding: 15px;
@@ -239,7 +228,6 @@
             font-size: 1.1em;
         }
         
-        /* 設定模態框 */
         .modal {
             display: none;
             position: fixed;
@@ -263,7 +251,7 @@
             max-width: 500px;
             border-radius: 20px 20px 0 0;
             padding: 25px;
-            max-height: 70vh;
+            max-height: 80vh;
             overflow-y: auto;
         }
         
@@ -298,16 +286,42 @@
             font-size: 0.9em;
         }
         
-        .setting-input {
+        .setting-input, .setting-select {
             width: 100%;
             padding: 12px;
             border: 2px solid var(--border);
             border-radius: 10px;
             font-size: 1em;
             font-family: inherit;
+            background: white;
         }
         
-        /* 設置按鈜 */
+        .week-jump-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .week-info-display {
+            background: #f0f4ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        .week-info-display .current-reading {
+            font-size: 1.1em;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
         .settings-trigger {
             position: fixed;
             bottom: 160px;
@@ -323,13 +337,11 @@
             z-index: 99;
         }
         
-        /* 響應式 */
         @media (max-width: 480px) {
             body { font-size: 16px; }
             .content { padding: 15px; }
         }
         
-        /* 滾動條美化 */
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -347,7 +359,7 @@
     <header class="header">
         <div class="header-top">
             <h1>📖 馬太福音生命讀經</h1>
-            <span class="week-badge">第1週</span>
+            <span class="week-badge" onclick="showWeekSelector()">第1週 ▼</span>
         </div>
         <div class="header-subtitle">第一篇、王的家世與身分（一）</div>
     </header>
@@ -355,12 +367,12 @@
     <!-- 分段指示器 -->
     <div class="part-indicator">
         <span class="part-badge">第一部分</span>
-        <span class="progress-text">1 / 2</span>
+        <span class="progress-text">1 / 144</span>
     </div>
     
     <!-- 進度條 -->
     <div class="progress-bar">
-        <div class="progress-fill" style="width: 50%"></div>
+        <div class="progress-fill" id="progressFill" style="width: 0.7%"></div>
     </div>
     
     <!-- 經文 -->
@@ -427,17 +439,13 @@
     <!-- 倒數計時 -->
     <div class="countdown">
         <div>⏰ 距離第二部分還有</div>
-        <div class="countdown-time" id="countdown">7天 0小時 0分鐘</div>
+        <div class="countdown-time" id="countdown">計算中...</div>
     </div>
     
     <!-- 底部導航 -->
     <nav class="bottom-nav">
-        <button class="nav-btn prev" disabled>
-            ← 上一篇
-        </button>
-        <button class="nav-btn next" onclick="showPart2()">
-            下一篇 →
-        </button>
+        <button class="nav-btn prev" onclick="goToPrev()">← 上一週</button>
+        <button class="nav-btn next" onclick="goToNext()">下一週 →</button>
     </nav>
     
     <!-- 字體控制 -->
@@ -448,6 +456,32 @@
     
     <!-- 設置按鈜 -->
     <button class="settings-trigger" onclick="toggleSettings()">⚙️</button>
+    
+    <!-- 周數選擇器模態框 -->
+    <div class="modal" id="weekSelectorModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title">📅 選擇週數</span>
+                <button class="close-btn" onclick="closeWeekSelector()">×</button>
+            </div>
+            
+            <div class="setting-item">
+                <label class="setting-label">跳轉到第幾週？（共144週）</label>
+                <select class="setting-select" id="weekSelect">
+                    <!-- 週數選項將由JavaScript生成 -->
+                </select>
+            </div>
+            
+            <div class="week-info-display" id="weekInfoDisplay">
+                <div class="current-reading">第1篇 - 第一部分</div>
+                <div style="color: #666; font-size: 0.9em; margin-top: 5px;">王的家世與身分（一）</div>
+            </div>
+            
+            <button class="week-jump-btn" onclick="jumpToSelectedWeek()">
+                跳轉到選定週數
+            </button>
+        </div>
+    </div>
     
     <!-- 設置模態框 -->
     <div class="modal" id="settingsModal">
@@ -464,15 +498,149 @@
             
             <div class="setting-item">
                 <label class="setting-label">📖 當前進度</label>
-                <div style="padding: 15px; background: #f5f5f5; border-radius: 10px;">
-                    第1篇 - 第一部分（第1週）
+                <div class="week-info-display">
+                    <div class="current-reading">第1篇 - 第一部分</div>
+                    <div style="color: #666; font-size: 0.9em; margin-top: 5px;">第1週 / 共144週</div>
                 </div>
             </div>
         </div>
     </div>
     
     <script>
-        // 字體大小控制
+        // ===== 配置 =====
+        var TOTAL_WEEKS = 144; // 72篇 × 2部分
+        var currentWeek = 1;
+        var startDate = '2025-01-06';
+        
+        // 讀經標題列表（前5篇）
+        var readingTitles = [
+            "第一篇、王的家世與身分（一）",
+            "第二篇、王的家世與身分（二）",
+            "第三篇、星象家來尋求並敬拜嬰孩基督",
+            "第四篇、嬰孩耶穌被逃到埃及並被帶回",
+            "第五篇、先鋒的職事─開路並引進王"
+        ];
+        
+        // ===== 初始化 =====
+        window.onload = function() {
+            loadSettings();
+            generateWeekOptions();
+            updateDisplay();
+            updateCountdown();
+            setInterval(updateCountdown, 60000);
+        };
+        
+        // ===== 生成週數選項 =====
+        function generateWeekOptions() {
+            var select = document.getElementById('weekSelect');
+            select.innerHTML = '';
+            
+            for (var i = 1; i <= TOTAL_WEEKS; i++) {
+                var option = document.createElement('option');
+                option.value = i;
+                var readingNum = Math.ceil(i / 2);
+                var part = (i % 2 === 1) ? '一' : '二';
+                var title = readingTitles[readingNum - 1] || '第' + readingNum + '篇';
+                option.textContent = '第' + i + '週 - 第' + readingNum + '篇（' + part + '）';
+                select.appendChild(option);
+            }
+            
+            select.value = currentWeek;
+            select.onchange = updateWeekInfo;
+        }
+        
+        // ===== 更新週數信息顯示 =====
+        function updateWeekInfo() {
+            var week = parseInt(document.getElementById('weekSelect').value);
+            var readingNum = Math.ceil(week / 2);
+            var part = (week % 2 === 1) ? '第一部分' : '第二部分';
+            var title = readingTitles[readingNum - 1] || '第' + readingNum + '篇';
+            
+            document.getElementById('weekInfoDisplay').innerHTML = 
+                '<div class="current-reading">第' + readingNum + '篇 - ' + part + '</div>' +
+                '<div style="color: #666; font-size: 0.9em; margin-top: 5px;">' + title + '</div>';
+        }
+        
+        // ===== 跳轉到選定週數 =====
+        function jumpToSelectedWeek() {
+            currentWeek = parseInt(document.getElementById('weekSelect').value);
+            saveSettings();
+            updateDisplay();
+            closeWeekSelector();
+            
+            // 顯示提示
+            var readingNum = Math.ceil(currentWeek / 2);
+            var part = (currentWeek % 2 === 1) ? '一' : '二';
+            alert('已跳轉到第' + currentWeek + '週\n第' + readingNum + '篇（' + part + '）');
+        }
+        
+        // ===== 顯示周數選擇器 =====
+        function showWeekSelector() {
+            document.getElementById('weekSelect').value = currentWeek;
+            updateWeekInfo();
+            document.getElementById('weekSelectorModal').classList.add('active');
+        }
+        
+        function closeWeekSelector() {
+            document.getElementById('weekSelectorModal').classList.remove('active');
+        }
+        
+        // ===== 上一週/下一週 =====
+        function goToPrev() {
+            if (currentWeek > 1) {
+                currentWeek--;
+                saveSettings();
+                updateDisplay();
+            }
+        }
+        
+        function goToNext() {
+            if (currentWeek < TOTAL_WEEKS) {
+                currentWeek++;
+                saveSettings();
+                updateDisplay();
+            }
+        }
+        
+        // ===== 更新頁面顯示 =====
+        function updateDisplay() {
+            var readingNum = Math.ceil(currentWeek / 2);
+            var part = (currentWeek % 2 === 1) ? '第一部分' : '第二部分';
+            var title = readingTitles[readingNum - 1] || '第' + readingNum + '篇';
+            
+            // 更新頂部週數
+            document.querySelector('.week-badge').textContent = '第' + currentWeek + '週 ▼';
+            
+            // 更新標題
+            document.querySelector('.header-subtitle').textContent = title;
+            
+            // 更新分段指示器
+            document.querySelector('.part-badge').textContent = part;
+            document.querySelector('.progress-text').textContent = currentWeek + ' / ' + TOTAL_WEEKS;
+            
+            // 更新進度條
+            var progress = (currentWeek / TOTAL_WEEKS) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            
+            // 更新倒數計時標題
+            var nextWeek = currentWeek + 1;
+            if (nextWeek <= TOTAL_WEEKS) {
+                var nextPart = (nextWeek % 2 === 1) ? '下一部分' : '下一篇';
+                document.querySelector('.countdown div:first-child').textContent = 
+                    '⏰ 距離' + nextPart + '還有';
+            }
+            
+            // 更新按狀態
+            document.querySelector('.nav-btn.prev').disabled = (currentWeek <= 1);
+            document.querySelector('.nav-btn.next').disabled = (currentWeek >= TOTAL_WEEKS);
+        }
+        
+        // ===== 設定功能 =====
+        function toggleSettings() {
+            document.getElementById('settingsModal').classList.toggle('active');
+        }
+        
+        // ===== 字體大小控制 =====
         var currentFontSize = 18;
         function changeFontSize(delta) {
             currentFontSize += delta;
@@ -481,17 +649,7 @@
             document.body.style.fontSize = currentFontSize + 'px';
         }
         
-        // 設置模態框
-        function toggleSettings() {
-            document.getElementById('settingsModal').classList.toggle('active');
-        }
-        
-        // 顯示第二部分
-        function showPart2() {
-            alert('第二部分將在第二週自動顯示！\n\n切換到下一週查看第二部分内容。');
-        }
-        
-        // 倒數計時
+        // ===== 倒數計時 =====
         function updateCountdown() {
             var now = new Date();
             var next = new Date();
@@ -507,12 +665,41 @@
                 days + '天 ' + hours + '小時 ' + mins + '分鐘';
         }
         
-        updateCountdown();
-        setInterval(updateCountdown, 60000);
+        // ===== 本地儲存 =====
+        function loadSettings() {
+            try {
+                var saved = localStorage.getItem('matthewReaderSettings');
+                if (saved) {
+                    var settings = JSON.parse(saved);
+                    currentWeek = settings.week || 1;
+                    startDate = settings.startDate || '2025-01-06';
+                    document.getElementById('startDate').value = startDate;
+                }
+            } catch(e) {}
+        }
         
-        // 點擊模態框外部關閉
+        function saveSettings() {
+            try {
+                localStorage.setItem('matthewReaderSettings', JSON.stringify({
+                    week: currentWeek,
+                    startDate: startDate
+                }));
+            } catch(e) {}
+        }
+        
+        // ===== 點擊模態框外部關閉 =====
+        document.getElementById('weekSelectorModal').addEventListener('click', function(e) {
+            if (e.target === this) closeWeekSelector();
+        });
+        
         document.getElementById('settingsModal').addEventListener('click', function(e) {
             if (e.target === this) toggleSettings();
+        });
+        
+        // 開始日期變更
+        document.getElementById('startDate').addEventListener('change', function() {
+            startDate = this.value;
+            saveSettings();
         });
     </script>
 </body>
