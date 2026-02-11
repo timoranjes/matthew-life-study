@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>馬太福音生命讀經 - 第1篇（二）</title>
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --bg: #f5f5f5;
+            --card: #ffffff;
+            --text: #333333;
+            --text-light: #666666;
+            --border: #e0e0e0;
+            --shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            font-size: 18px;
+            padding-bottom: 80px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .header h1 {
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+        
+        .week-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+        }
+        
+        .header-subtitle {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        
+        .part-indicator {
+            background: var(--card);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .part-badge {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+        
+        .progress-text {
+            font-size: 0.85em;
+            color: var(--text-light);
+        }
+        
+        .progress-bar {
+            height: 3px;
+            background: var(--border);
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 100%;
+            transition: width 0.3s;
+        }
+        
+        .scripture-section {
+            background: #f0f4ff;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .scripture-text {
+            font-style: italic;
+            color: var(--text);
+            margin-bottom: 10px;
+            font-size: 1.05em;
+        }
+        
+        .scripture-ref {
+            text-align: right;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+        
+        .content {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .content-body {
+            text-align: justify;
+        }
+        
+        .content-body p {
+            margin-bottom: 1.2em;
+            text-indent: 2em;
+        }
+        
+        .content-body h3 {
+            font-size: 1.2em;
+            margin: 1.5em 0 0.8em;
+            color: var(--primary);
+            text-indent: 0;
+        }
+        
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--card);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+        
+        .nav-btn {
+            background: none;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .nav-btn.prev {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+        
+        .nav-btn.next {
+            color: var(--text-light);
+        }
+        
+        .font-control {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 99;
+        }
+        
+        .font-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: var(--card);
+            box-shadow: var(--shadow);
+            font-size: 1.2em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .countdown {
+            text-align: center;
+            padding: 15px;
+            background: var(--card);
+            margin: 0 20px 20px;
+            border-radius: 10px;
+            font-size: 0.9em;
+            color: var(--text-light);
+        }
+        
+        .countdown-time {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        
+        .settings-trigger {
+            position: fixed;
+            bottom: 160px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: var(--card);
+            box-shadow: var(--shadow);
+            font-size: 1.2em;
+            cursor: pointer;
+            z-index: 99;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 200;
+            justify-content: center;
+            align-items: flex-end;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--card);
+            width: 100%;
+            max-width: 500px;
+            border-radius: 20px 20px 0 0;
+            padding: 25px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+        
+        .setting-item {
+            margin-bottom: 20px;
+        }
+        
+        .setting-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-light);
+            font-size: 0.9em;
+        }
+        
+        .setting-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: inherit;
+        }
+        
+        @media (max-width: 480px) {
+            body { font-size: 16px; }
+            .content { padding: 15px; }
+        }
+        
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-top">
+            <h1>📖 馬太福音生命讀經</h1>
+            <span class="week-badge">第2週</span>
+        </div>
+        <div class="header-subtitle">第一篇、王的家世與身分（一）</div>
+    </header>
+    
+    <div class="part-indicator">
+        <span class="part-badge">第二部分</span>
+        <span class="progress-text">2 / 2</span>
+    </div>
+    
+    <div class="progress-bar">
+        <div class="progress-fill"></div>
+    </div>
+    
+    <div class="scripture-section">
+        <div class="scripture-text">「亞伯拉罕生以撒，以撒生雅各，雅各生猶大和他的弟兄們。」</div>
+        <div class="scripture-ref">— 太一1～17</div>
+    </div>
+    
+    <article class="content">
+        <div class="content-body">
+<h3>一 基督的家譜</h3>
+
+<p>現在我們來看馬太福音裏耶穌的譜系。我們需要領悟耶穌是誰。耶穌是誰？我們可能回答說，祂是神的兒子，但這譜系沒有這樣一個辭，反而稱祂為大衛的子孫，亞伯拉罕的子孫。要說耶穌是誰很難，因為祂太奇妙了。</p>
+
+<p>耶穌是神與人的調和，就是神性與人性的調和。這是耶穌的家譜。耶穌的家譜，意思就是：祂是那個調和，那奇妙的調和。在這個家譜裏，我們看見這神聖的一位，與許多的人，各式各樣的人調和。我們不該仍以為馬太一章一至十七節只是一張名單。</p>
+
+<p>基督的家譜由下列五班人組成：</p>
+
+<p>1 列祖</p>
+
+<p>這些先祖是偉大的人物，共有十四代。（太一2～6上。）</p>
+
+<p>2 君王</p>
+
+<p>這些君王是王族，也有十四代。（太一6下～10。）</p>
+
+<p>3 平民（被擄與歸回的人）</p>
+
+<p>基督的家譜不僅包括高階層的人，也包括平民，不顯著的人，就如馬利亞和約瑟。貧窮人、小人物也包括在基督的家譜裏。基督不僅與先祖同列，與君王同列，也與一班平民同列。神不僅屬於偉人、皇族，也屬於小人物。從基督家譜這幅圖畫，我們可以看見這個家譜包括了各式各樣的人。</p>
+
+<p>這個家譜包括蒙召的人如亞伯拉罕，也包括遷徙到被擄之地的人。在這簡短的記載裏有『遷徙』一辭。（太一17。）亞伯拉罕是從巴別，巴比倫的發源地，被呼召出來的。基督的家譜不僅包括蒙召的人，也包括退後的人。也許五年前你蒙召了，但今天你卻退後了。不要灰心失望，基督的家譜包括你。這個家譜包括耶哥尼雅，一個失去王位、被擄到巴比倫作俘虜的君王。你有沒有失去王位？不要以為你沒有。在你基督徒的生活中，有時候你失去了王位。你一度是君王，卻失去了君王職分，成了退後的人。我們的先祖亞伯拉罕從巴比倫出來，你卻回去了，你不是甘願回去的，乃是被擄回去的。讚美主，基督的家譜甚至包括墮落的人！</p>
+
+<p>被擄之後有恢復。因此有另一個名字，所羅巴伯，就是恢復的名字。許多被擄的人與所羅巴伯一同歸回。基督的家譜包括各式各樣的人：好人、壞人、蒙召的人、墮落的人、恢復的人。如果我問你，你是那一種，你可能說，首先你是蒙召的人，然後是墮落的人，最後是恢復的人。你原是亞伯拉罕，成了耶哥尼雅，但今天你是所羅巴伯。我們都是所羅巴伯。我們是蒙召的人，墮落的人，也是恢復的人。</p>
+
+<p>4 四個再嫁的婦女</p>
+
+<p>亞當的家譜不記婦女。（創五１～32。）但在基督這個簡短的家譜裏卻題起五個婦女。這五個婦女好像我的手指一樣：四個形成一組，另一個自成一組。這五個婦女當中，四個是再嫁的，其中一個且是妓女。似乎這裏神聖的記載不願題起那些好的，就如撒拉或利百加，卻題起那些壞的。請聽神聖的記載：『大衛從作過烏利亞妻子的生所羅門。』（太一6。）這個記載甚至不說她的名字，只題她的歷史，為要題醒我們，她是怎樣的人。</p>
+
+<p>你知道他瑪的歷史麼？她是猶大的兒媳。猶大從他的兒媳生了孿生子。（創三八24～30。）這是何等可怕！第二個題到名字的女人，是耶利哥城中的妓女喇合：第三個是摩押女子路得。摩押人不可入耶和華的會，他們的子孫雖過十代，也不可入耶和華的會。（申二三3。）摩押人是羅得與他女兒所生之摩押的後裔。第四個女人是迦南人烏利亞的妻子拔示巴：大衛謀殺了烏利亞，奪了拔示巴為妻，從她生了所羅門。</p>
+
+<p>為甚麼這個簡短的記載題到這些女人？因為她們是我們的代表。不要以為你多純潔，以為你比這些女人純潔。你若追本溯源，就會發現你祖父是怎樣生的，是從誰生的：你父親是怎樣生的，是從誰生的：你又是怎樣生的，是從誰生的。我們更壞。但最壞的人也包括在基督的家譜裏！讚美主！祂實在是罪人的救主。</p>
+
+<p>四這數字表徵一切受造之物，包括整個人類。人性是污穢的，沒有一個人是潔淨的。但感謝主，我們都與基督聯結了。我們是基督家譜的一部分。</p>
+
+<p>如果我們來寫基督的傳記，而聖經中又沒有神的傳記，我們必不敢這樣寫。我們會把這些不純潔的先祖母都隱藏起來，只題那些好的先祖母的名字，如撒拉和利百加。但聖靈不題撒拉、利百加、和所有好的，卻特意包括了那些不純潔的。這神聖的記載若列舉那些好女人的名字，沒有不純潔之人的名字，我就會懷疑召會當前的光景。我會說，『看看今天召會中的光景，沒有多少人是很純潔的。』不要以為你是那麼純潔、那麼潔淨。我們不是純淨的。然而，基督的家譜包括好的，也包括壞的。事實上，這家譜包括的壞人多於好人。</p>
+
+<p>5 一個童女</p>
+
+<p>在這四個再嫁的女人之外，有一個童女很突出：耶穌的母親馬利亞。馬利亞是良善、純潔、潔淨的。這指明這個家譜所題的人，除了耶穌以外，都是罪人。所有人都是不潔淨的，只有耶穌例外。</p>
+
+<h3>二 大衛的子孫</h3>
+
+<p>基督是大衛的子孫（直譯，兒子－太二二42，45，啟二二16）。大衛的兒子所羅門，主要在三方面作基督的豫表。第一，他豫表基督承受國度。（撒下七12下，13，耶二三5，路一32～33。）第二，所羅門有智慧，並說智慧的話。在馬太十二章，我們看見基督也有智慧，並說智慧的話。在這章裏，基督說到白己是更大的所羅門。（太十二４２。）那裏有一位比所羅門更大的，祂說智慧的話。沒有人的話像基督的話那樣有智慧。第三、所羅門建造神的殿。（撒下七13。）基督是大衛的子孫，建造神的殿，就是召會。</p>
+
+<h3>三 亞伯拉罕的子孫</h3>
+
+<p>基督也是亞伯拉罕的子孫（直譯，兒子）。這個家譜只說基督是大衛的子孫，亞伯拉罕的子孫，而不說是別人的子孫或後裔。舊約清楚的豫言基督是亞伯拉罕的子孫（兒子）。以撒乃是基督的豫表。他作基督的豫表，主要也有三方面。第一，以撒把福音給萬國，包括猶太人和外邦人。（創二二18上，加三16，14。）第二，他被獻給神以至於死，並且復活了。(創二二1～12，來十一17，19。）第三，他得著新婦。（創二四67。）這豫表基督是所應許的那一位，神把福帶給萬國，祂也被獻上以至於死，並復活了，且在復活之後要得著新婦。（約三29，啟十九7。）有一天，亞伯拉罕的僕人所豫表的聖靈，要將屬靈、神聖、屬天的利百加，帶給屬天的以撒。</p>
+
+<p>亞伯拉罕的兒子得著新婦，大衛的兒子建造殿。對基督而言，新婦就是殿，殿就是新婦。這就是為何這家譜說基督是亞伯拉罕的子孫，大衛的子孫。祂將自己獻上以至於死，並且復活了：現今神在建造神的殿，將來祂要得著新婦。基督也講說智慧，並把神的福帶給萬國。神是應驗這一切事的那一位。在四福音裏，這六面我們每一面都能找到。福音書啟示，基督來承受國度，祂將自己獻上以至於死並且復活了，祂講說智慧的話，祂把福帶給萬民，祂在建造神的家，祂且要來得著新婦。基督必定是真以撒，真所羅門。</p>
+
+<p>耶穌是大衛的子孫，對猶太人乃是大福。但祂是亞伯拉罕的子孫，把福帶給所有的外邦人。祂是大衛的子孫，乃是為著猶太人；祂是亞伯拉罕的子孫，乃是為著我們眾人。如果耶穌只是大衛的子孫，祂就與我們毫不相干。讚美主，祂也是亞伯拉罕的子孫（後裔）！萬國都要因亞伯拉罕的後裔得福，這後裔乃是基督；這福就是有分於三一神。神應許亞伯拉罕的福乃是那靈，（加三14，）那靈是三一神終極的實化。藉著基督這亞伯拉罕的後裔，我們有那靈，我們也有分於三一神。阿利路亞！</p>
+        </div>
+    </article>
+    
+    <div class="countdown">
+        <div>⏰ 距離第3週還有</div>
+        <div class="countdown-time" id="countdown">計算中...</div>
+    </div>
+    
+    <nav class="bottom-nav">
+        <button class="nav-btn prev" onclick="goBack()">
+            ← 上一篇
+        </button>
+        <button class="nav-btn next" disabled>
+            下一篇 →
+        </button>
+    </nav>
+    
+    <div class="font-control">
+        <button class="font-btn" onclick="changeFontSize(1)">A+</button>
+        <button class="font-btn" onclick="changeFontSize(-1)">A-</button>
+    </div>
+    
+    <button class="settings-trigger" onclick="toggleSettings()">⚙️</button>
+    
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title">⚙️ 設定</span>
+                <button class="close-btn" onclick="toggleSettings()">×</button>
+            </div>
+            
+            <div class="setting-item">
+                <label class="setting-label">📅 開始日期</label>
+                <input type="date" class="setting-input" value="2025-01-06">
+            </div>
+            
+            <div class="setting-item">
+                <label class="setting-label">📖 當前進度</label>
+                <div style="padding: 15px; background: #f5f5f5; border-radius: 10px;">
+                    第1篇 - 第二部分（第2週）
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        var currentFontSize = 18;
+        function changeFontSize(delta) {
+            currentFontSize += delta;
+            if (currentFontSize < 14) currentFontSize = 14;
+            if (currentFontSize > 24) currentFontSize = 24;
+            document.body.style.fontSize = currentFontSize + 'px';
+        }
+        
+        function toggleSettings() {
+            document.getElementById('settingsModal').classList.toggle('active');
+        }
+        
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+        
+        function updateCountdown() {
+            var now = new Date();
+            var next = new Date();
+            next.setDate(now.getDate() + (8 - now.getDay()) % 7);
+            next.setHours(0, 0, 0, 0);
+            
+            var diff = next - now;
+            var days = Math.floor(diff / 86400000);
+            var hours = Math.floor((diff % 86400000) / 3600000);
+            var mins = Math.floor((diff % 3600000) / 60000);
+            
+            document.getElementById('countdown').textContent = 
+                days + '天 ' + hours + '小時 ' + mins + '分鐘';
+        }
+        
+        updateCountdown();
+        setInterval(updateCountdown, 60000);
+        
+        document.getElementById('settingsModal').addEventListener('click', function(e) {
+            if (e.target === this) toggleSettings();
+        });
+    </script>
+</body>
+</html>
